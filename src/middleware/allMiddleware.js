@@ -40,16 +40,10 @@ const deleteBlogbyParams= async (req,res,next)=>{
      let token = req.headers["x-api-key" || "X-Api-Key"]
      let decodedToken = jwt.verify(token,"functionup-uranium")
      let { authorsId, isPublished, tags, category, subcategory } = req.query
-<<<<<<< HEAD
-     let blog = await blogModel.find({$or:[{authorId:authorsId},{isPublished:isPublished},{tags:tags}, {category:category}, {subcategory:subcategory}]})
-     if(blog[0].authorId!=decodedToken.userId){
-         res.status(401).send({ error: "you are not authourized to change other user document " })
-=======
      let blog = await blogModel.findOne({authorId : decodedToken.userId, $or:[{authorId:authorsId},{isPublished:isPublished},{tags:tags}, {category:category}, {subcategory:subcategory}]})
     
      if (!blog){
         res.status(404).send({ error: "either authorsId or attribute is incorrect/ you are not authourized / there is no document with this key value for this user logged in" })
->>>>>>> a3706893abcf9e83615fc6440c33bfb816287795
      }
  
      next()
